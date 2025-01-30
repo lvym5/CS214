@@ -1,0 +1,296 @@
+Script started on 2024-02-26 13:59:55-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="152" LINES="79"]
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ cat Average.java
+/* Average.java is a driver for method avg().
+ *
+ * Started by: Prof. Adams, for CS 214 at Calvin College
+ *
+ * Student Name: Lily McAboy
+ * Date: 03/
+ *
+ * Precondition: theArray, is an array of double values.
+ * Output: the average of the numbers in theArray.
+ ***************************************************************/
+
+import java.io.*;
+
+public class Average
+{
+	public static void main(String[] args) {
+
+		double[] array1 = new double[] {9.0, 8.0, 7.0, 6.0};
+		double[] array0 = null;
+
+		// output the average of the values in the arrays
+		System.out.println("The first average is " + avg(array0));
+		System.out.println("The second average is " + avg(array1));
+	}
+
+
+	/* sum() is a method that computes the sum of all the values
+	 * in an array of doubles.
+	 * Receive: anArray, an array of doubles.
+	 * Return: the sum of the values in anArray.
+	 ************************************************************/
+
+	public static double sum(double[] array){
+		double total = 0.0;
+		for(int i = 0; i < array.length; i++){
+			total += array[i];
+		}
+		return total;
+	}
+
+	/* avg() is a method that computes the average of the values
+	 * in an array.
+	 * Receive: anArray, an array of doubles.
+	 * Return: the average of the values in anArray.
+	 **************************************************************/
+
+	public static double avg(double[] array){
+		if(array == null || array.length <= 0)
+			return 0.0;
+		else
+			return sum(array)/array.length;
+
+	}
+
+
+}
+
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ java Average.java
+The first average is 0.0
+The second average is 7.5
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ exit
+
+Script done on 2024-02-26 14:00:07-05:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2024-02-26 14:18:40-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="152" LINES="79"]
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ cat average.adb
+-- average.adb "test-drives" function Average.
+-- Precondition: theArray is an array of numbers.
+-- Output: the average of the numbers.
+--
+-- Begun by: Dr. Adams, CS 214 at Calvin College.
+-- Completed by: Lily McAboy
+-- Date:03/1/2024
+-----------------------------------------------
+
+with Ada.Text_IO; use Ada.Text_IO;             -- Put(String)
+with Ada.Float_Text_IO; use Ada.Float_Text_IO; -- Put(Float)
+
+procedure average is
+
+	type Vector is array(Positive range <>) of Float;
+
+	array1 : Vector := (9.0, 8.0, 7.0, 6.0);
+	array0 : vector := (0.0, 0.0);
+
+
+----------------------------------------------
+-- sum() sums the values in an array           -
+-- Receive: anArray, an array of numbers     -
+-- Return: the sum of the values in anArray. -
+----------------------------------------------
+
+-- Replace this line with definition of sum 
+
+	function sum(arr: Vector) return Float is
+		total : Float := 0.0;
+	begin 
+		--for I in arr'Range
+		for I in 1 .. arr'Last
+		loop
+			total := total + arr(I);
+		end loop;
+		return total;
+	end sum;
+
+
+-- Replace this line with documentation and definition of average()
+	function average(arr: Vector) return Float is
+		begin 
+			return sum(arr) / Float(arr'Length);
+		end average; 
+
+begin
+   Put(" average 0 is ");
+   Put( average(array0) );
+   New_line;
+   Put(" average 1 is ");
+   Put( average(array1) );
+   New_line;
+end average;
+
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ gnatmake average.adb
+gnatmake: "average" up to date.
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ ./average
+ average 0 is  0.00000E+00
+ average 1 is  7.50000E+00
+]0;lvm5@maroon07: ~/214/labs/07[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07[00m$ exit
+
+Script done on 2024-02-26 14:18:55-05:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2024-02-26 14:33:07-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="152" LINES="79"]
+]0;lvm5@maroon07: ~/214/labs/07/clojure[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07/clojure[00m$ cat src/average.clj
+;; average.clj "test-drives" function average().
+;;
+;; Output: the average of a sequence of numbers.
+;;
+;; Usage: clojure -m average
+;;
+;; Begun by: Dr. Adams, CS 214 at Calvin College.
+;; Completed by: Lily McAboy
+;; Date: 3/1/2024
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(ns average)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; sum() sums the values in a vector.       
+;; Receive: aVec, a vector of numbers.
+;; Return: the sum of the values in aVec.
+
+(defn sum [aVec]
+  (if (vector? aVec)
+    (if (empty? aVec)
+      0.0
+      (+ (peek aVec)
+         (sum (pop aVec))
+         )
+      )
+    )
+  )
+
+;; Replace this line with the definition of sum2()
+
+(defn sum2 [aVec]
+  (if (vector? aVec)
+    (if (empty? aVec)
+      0.0
+      (reduce + aVec)
+      )
+    )
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; average() computes the average of a vector of numbers.
+;; Receive: aVec, a vector of numbers. 
+;; Return: the average of the numbers in aVec.
+
+(defn average [aVec]
+  (if (empty? aVec)
+    nil 
+    (/ (sum aVec) (count aVec))
+    )
+)
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; main function to test functions sum() and average()
+  ;; Output: the sum and average of some test vectors.
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (defn -main []
+    (let
+      [ emptyVec []
+       testVec  [9.0 8.0 7.0 6.0]
+       ]
+
+      (print "\nThe empty vec: " emptyVec) 
+      (print "\nThe test  vec: " testVec) 
+      (println "\n")
+
+      ;; Test sum()...
+      (printf "\nThe first sum is %.3f\n" (sum emptyVec))
+      (printf "The second sum is %.3f\n" (sum testVec))
+
+      ;; Test average()...
+      (printf "\nThe first average is %.3f\n" (average emptyVec))
+      (printf "The second average is %.3f\n" (average testVec))
+      (println "\n")
+
+      ;; Test sum2()...
+      (printf "\nThe first sum2 is %.3f\n" (sum2 emptyVec))
+      (printf "The second sum2 is %.3f\n" (sum2 testVec))
+      (println "\n")
+      )
+    )
+
+]0;lvm5@maroon07: ~/214/labs/07/clojure[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07/clojure[00m$ clojure -m average
+
+The empty vec:  []
+The test  vec:  [9.0 8.0 7.0 6.0]
+
+
+The first sum is 0.000
+The second sum is 30.000
+
+The first average is nul
+The second average is 7.500
+
+
+
+The first sum2 is 0.000
+The second sum2 is 30.000
+
+
+]0;lvm5@maroon07: ~/214/labs/07/clojure[01;32mlvm5@maroon07[00m:[01;34m~/214/labs/07/clojure[00m$ exit
+
+Script done on 2024-02-26 14:33:25-05:00 [COMMAND_EXIT_CODE="0"]
+Script started on 2024-02-26 17:40:08-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="96" LINES="32"]
+]0;lvm5@remotel2: ~/214/labs/07[01;32mlvm5@remotel2[00m:[01;34m~/214/labs/07[00m$ cat average.rb
+# average.rb averages the values of an array of doubles.
+# Precondition: theArray is an array of numbers
+# Output: the average of the values in theArray
+#
+# Begun by: Dr. Adams, for CS 214 at Calvin College.
+# Completed by: Lily McAboy 
+# Date: 3/1/2024  
+########################################################
+
+###############################################
+# sum() sums the values in an array
+# Receive: anArray, an array of numbers
+# Return: the sum of the values in anArray.
+################################################
+
+# Define sum() method here
+
+def sum(arr)
+  total = 0.0
+  if arr.empty?
+    return 0.0
+  else
+    arr.each { |item| total += item }
+    return total
+  end
+
+end 
+# Document and define average() method here
+def average(arr)
+  if arr.empty?
+    return 0.0
+  else
+    return sum(arr) / arr.size.to_f
+  end
+end
+
+def main
+array0 = Array.new
+array1 = [9.0, 8.0, 7.0, 6.0]
+# Define array0 as an Array containing no values
+# Define array1 as an Array containing 9.0, 8.0, 7.0, 6.0
+
+puts "sum 0 is: #{ sum(array0) }\n"
+puts "sum 1 is: #{ sum(array1) }\n"
+
+puts "average 0 is: #{ average(array0) }\n"
+puts "average 1 is: #{ average(array1) }\n"
+end
+
+main
+
+]0;lvm5@remotel2: ~/214/labs/07[01;32mlvm5@remotel2[00m:[01;34m~/214/labs/07[00m$ ruby average.rb
+sum 0 is: 0.0
+sum 1 is: 30.0
+average 0 is: 0.0
+average 1 is: 7.5
+]0;lvm5@remotel2: ~/214/labs/07[01;32mlvm5@remotel2[00m:[01;34m~/214/labs/07[00m$ exit
+
+Script done on 2024-02-26 17:40:21-05:00 [COMMAND_EXIT_CODE="0"]
