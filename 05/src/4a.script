@@ -1,0 +1,20 @@
+Script started on 2024-02-16 10:41:28-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+]0;lvm5@remotel2: ~/214/labs/05/src[01;32mlvm5@remotel2[00m:[01;34m~/214/labs/05/src[00m$ clojure
+[KClojure 1.10.1
+[Kuser=> [Kuser=> [Kuser=> (Defn sumSquares [seq][seq] user=> [K[K(Defn sumSquares [seq] 
+[K(reduce + (map #(*  % %)(*  % %) seq)(reduce + (map #(*  % %) seq))(reduce + (map #(*  % %) seq)))[K(reduce + (map #(*  % %) seq)))
+Syntax error compiling at (REPL:1:1).
+Unable to resolve symbol: Defn in this context
+user=> [Kuser=> [K^[[Auser=> (reduce + (map #(*  % %) seq)))user=> ([8PDefn sumSquares [seq] user=> (reduce + (map #(*  % %) seq)))user=> [K(defn sumSquares [seq][seq] user=> [K[K(defn sumSquares [seq] 
+[K(reduce + (map #(*  % %)(*  % %) seq)(reduce + (map #(*  % %) seq))(reduce + (map #(*  % %) seq)))[K(reduce + (map #(*  % %) seq)))
+[K#'user/sumSquares
+user=> [Kuser=> [Kuser=> (sumSquares '(1 2 3)(1 2 3))user=> [K(sumSquares '(1 2 3))
+14
+user=> [Kuser=> [Kuser=> (sumSquares '(1 2 3 4 5)(1 2 3 4 5))user=> [K(sumSquares '(1 2 3 4 5))
+55
+user=> [Kuser=> [Kuser=> (sumSquares [-1 -2 -3 0 1][-1 -2 -3 0 1])user=> (sumSquares [-1 -2 -3 0 1])user=> [K(sumSquares [-1 -2 -3 0 1])
+15
+user=> [Kuser=> [Kuser=> 
+[K]0;lvm5@remotel2: ~/214/labs/05/src[01;32mlvm5@remotel2[00m:[01;34m~/214/labs/05/src[00m$ exit
+
+Script done on 2024-02-16 10:43:04-05:00 [COMMAND_EXIT_CODE="0"]

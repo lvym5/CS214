@@ -1,0 +1,11 @@
+Script started on 2024-02-14 08:47:39-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+]0;lvm5@remotel1: ~/214/labs/05/src[01;32mlvm5@remotel1[00m:[01;34m~/214/labs/05/src[00m$ clojure 
+[KClojure 1.10.1
+[Kuser=> [Kuser=> [Kuser=> (fn [a b c][a b c] (max (Math/abs a)(Math/abs a) (Math/abs b)(Math/abs b) (Math/abs c)(Math/abs c))user=> (fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c)))user=> (fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c)))user=> [K(fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c)))
+[K#object[user$eval136$fn__137 0x332f25c8 "user$eval136$fn__137@332f25c8"]
+user=> [Kuser=> [Kuser=> (fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c)))([1@((fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c))) 1.5,  2 -3)user=> ((fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c))) 1.5 2 -3)user=> [K((fn [a b c] (max (Math/abs a) (Math/abs b) (Math/abs c))) 1.5 2 -3)
+3
+user=> [Kuser=> [Kuser=> 
+[K]0;lvm5@remotel1: ~/214/labs/05/src[01;32mlvm5@remotel1[00m:[01;34m~/214/labs/05/src[00m$ exit
+
+Script done on 2024-02-14 08:48:13-05:00 [COMMAND_EXIT_CODE="0"]
