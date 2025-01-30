@@ -1,0 +1,236 @@
+Script started on 2024-01-23 14:50:24-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="156" LINES="51"]
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ cat example6.lex
+%{
+#include <stdio.h>
+#include <stdlib.h>           /* atoi() */
+#include <string.h>           /* strcmp() */
+#include "example6.tab.h"
+%}
+%%
+[0-9]+                  yylval = atoi(yytext); return NUMBER;
+heat                    return TOKHEAT;
+on|off                  yylval = !strcmp(yytext,"on"); return STATE;
+set                     return TOKSET;
+humidity 		return TOKHUMIDITY;
+temperature             return TOKTEMPERATURE;
+\n                      /* ignore end of line */;
+[ \t]+                  /* ignore whitespace */;
+%%
+  
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ cat example6.y
+%{
+#include <stdio.h>
+#include <string.h>
+
+/* declarations */
+int yylex (void);
+void yyerror (char const *);
+int yyparse(void);
+
+/* definitions */ 
+void yyerror(const char *str) {
+        fprintf(stderr,"error: %s\n",str);
+}
+ 
+int yywrap() {
+        return 1;
+} 
+ 
+int main() {
+        yyparse();
+} 
+
+%}
+
+%token NUMBER TOKHEAT STATE TOKSET TOKTEMPERATURE TOKHUMIDITY
+%%
+commands: /* empty */
+        | commands command
+        ;
+
+command:
+        heat_switch
+	| humidity_set
+        | temperature_set
+        ;
+heat_switch:
+        TOKHEAT STATE
+        {
+                if ($2) {  /* if STATE == 1 */
+                        printf("\tHeat turned on\n");
+                } else {
+                        printf("\tHeat turned off\n");
+                }
+        }
+        ;
+
+temperature_set: 
+        TOKSET TOKTEMPERATURE NUMBER
+        {
+                printf("\tTemperature set to %d\n",$3);
+        }
+        ;
+humidity_set:
+	    TOKSET TOKHUMIDITY NUMBER
+	{
+		printf("\tHumidity set to %d\n", $3);
+	}
+	;
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ make
+make: 'example6' is up to date.
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ ./example6
+heat on
+	Heat turned on
+heat off
+	Heat turned off
+set temperature 25
+	Temperature set to 25
+set humidity 25
+	Humidity set to 25
+^C
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ exit
+exit
+
+Script done on 2024-01-23 14:51:24-05:00 [COMMAND_EXIT_CODE="130"]
+Observations: 
+
+1. Observing YY_RULE_SETUP:
+YY_RULE_SETUP
+#line 6 "example1.lex"
+printf("Start command received\n");
+        YY_BREAK
+case 2:
+YY_RULE_SETUP
+#line 7 "example1.lex"
+printf("stop commmand received\n");
+        YY_BREAK
+case 3:
+YY_RULE_SETUP
+#line 8 "example1.lex"
+ECHO;
+        YY_BREAK
+#line 742 "lex.yy.c"
+case YY_STATE_EOF(INITIAL):
+        yyterminate();
+
+        case YY_END_OF_BUFFER:
+                {
+What we see here is a code chunk shows the cases of what to do when a user gives the execution a command. YY_BREAK seems to separate each command or rule from the another command or rule from a user. 
+
+2. Observing results of number vs. word 
+Here are some test cases BEFORE changing an underscore to be valid: 
+9
+NUMBER
+
+hello
+WORD
+
+_hello
+_WORD
+
+7_rings
+NUMBER
+_WORD
+
+hello world
+WORD
+ WORD
+
+hello world!
+WORD
+ WORD
+!
+R2D2
+WORD
+
+2Rd2
+NUMBER
+WORD
+
+
+Here is the result when we change the code to make an underscore valid: 
+
+_world
+WORD
+
+hello_world
+WORD
+
+hello_
+WORD
+
+_underscore_
+WORD
+
+3. Recording Observations for StudentInfo: 
+
+Using the command ./example3 < StudentInfo.h
+Output: 
+KEYWORD: class
+IDENTIFIER: StudentInfo
+PUNCTUATION: {
+KEYWORD: public
+PUNCTUATION: :
+IDENTIFIER: StudentInfo
+PUNCTUATION: (
+PUNCTUATION: )
+PUNCTUATION: {
+IDENTIFIER: myGPA
+OPERATOR: =
+DOUBLE: 0.0 (0)
+PUNCTUATION: ;
+IDENTIFIER: myHours
+OPERATOR: =
+INTEGER: 0 (0)
+PUNCTUATION: ;
+PUNCTUATION: }
+IDENTIFIER: StudentInfo
+PUNCTUATION: (
+KEYWORD: double
+IDENTIFIER: gpa
+PUNCTUATION: ,
+KEYWORD: int
+IDENTIFIER: hours
+PUNCTUATION: )
+PUNCTUATION: {
+IDENTIFIER: myGPA
+OPERATOR: =
+IDENTIFIER: gpa
+PUNCTUATION: ;
+IDENTIFIER: myHours
+OPERATOR: =
+IDENTIFIER: hours
+PUNCTUATION: ;
+PUNCTUATION: }
+KEYWORD: private
+PUNCTUATION: :
+KEYWORD: double
+IDENTIFIER: myGPA
+PUNCTUATION: ;
+KEYWORD: int
+IDENTIFIER: myHours
+PUNCTUATION: ;
+PUNCTUATION: }
+PUNCTUATION: ;
+
+4: 
+
+A terminal cannot take anything after the terminal is placed, but a nonterminal can take characters after itself. Once a terminal is receieved, it cannot add anything back on it. 
+
+Unfortunately, the valid commands don't do anything. Temperature_switch just returns switch, heat on or heat off just gives the result "heat on or off" which tells us nothing. It is currently only able to "set" the temperature 
+
+5. 
+Here is the examples from executing example 5: 
+
+heat on
+	Heat turned on
+heat off
+	Heat turned off
+set temperature 22
+	Temperature set to 22
+set temperature 45
+	Temperature set to 45
+heat switch
+switch
+
+

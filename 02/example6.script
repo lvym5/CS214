@@ -1,0 +1,94 @@
+Script started on 2024-01-23 14:50:24-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="156" LINES="51"]
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ cat example6.lex
+%{
+#include <stdio.h>
+#include <stdlib.h>           /* atoi() */
+#include <string.h>           /* strcmp() */
+#include "example6.tab.h"
+%}
+%%
+[0-9]+                  yylval = atoi(yytext); return NUMBER;
+heat                    return TOKHEAT;
+on|off                  yylval = !strcmp(yytext,"on"); return STATE;
+set                     return TOKSET;
+humidity 		return TOKHUMIDITY;
+temperature             return TOKTEMPERATURE;
+\n                      /* ignore end of line */;
+[ \t]+                  /* ignore whitespace */;
+%%
+  
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ cat example6.y
+%{
+#include <stdio.h>
+#include <string.h>
+
+/* declarations */
+int yylex (void);
+void yyerror (char const *);
+int yyparse(void);
+
+/* definitions */ 
+void yyerror(const char *str) {
+        fprintf(stderr,"error: %s\n",str);
+}
+ 
+int yywrap() {
+        return 1;
+} 
+ 
+int main() {
+        yyparse();
+} 
+
+%}
+
+%token NUMBER TOKHEAT STATE TOKSET TOKTEMPERATURE TOKHUMIDITY
+%%
+commands: /* empty */
+        | commands command
+        ;
+
+command:
+        heat_switch
+	| humidity_set
+        | temperature_set
+        ;
+heat_switch:
+        TOKHEAT STATE
+        {
+                if ($2) {  /* if STATE == 1 */
+                        printf("\tHeat turned on\n");
+                } else {
+                        printf("\tHeat turned off\n");
+                }
+        }
+        ;
+
+temperature_set: 
+        TOKSET TOKTEMPERATURE NUMBER
+        {
+                printf("\tTemperature set to %d\n",$3);
+        }
+        ;
+humidity_set:
+	    TOKSET TOKHUMIDITY NUMBER
+	{
+		printf("\tHumidity set to %d\n", $3);
+	}
+	;
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ make
+make: 'example6' is up to date.
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ ./example6
+heat on
+	Heat turned on
+heat off
+	Heat turned off
+set temperature 25
+	Temperature set to 25
+set humidity 25
+	Humidity set to 25
+^C
+]0;lvm5@gold24: ~/214/labs/02[01;32mlvm5@gold24[00m:[01;34m~/214/labs/02[00m$ exit
+exit
+
+Script done on 2024-01-23 14:51:24-05:00 [COMMAND_EXIT_CODE="130"]
